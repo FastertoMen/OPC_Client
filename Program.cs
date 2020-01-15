@@ -139,12 +139,12 @@ namespace OPC_Client
             switch (param)
             {
                 case 0:
-                    Console.WriteLine("Файл с настройками settings.txt отсуствует. Будет создан новый файл, с настройками по умолчанию: " +
-                                    "\n Время опроса 01:00:00 - 01:05:00 " +
-                                    "\n Таймаут - 60000 " +
-                                    "\n Опрашиваются АТ1, АТ2, АТ3, АТ4, АТ5" +
-                                    "\n Порты: COM10, COM11, COM12, COM13, COM14" +
-                                    "\n ID ModusSlave (на УВП): 1, 1, 2, 1, 1");
+                    Console.WriteLine("TXT-File settings.txt not found. New file will be created with default settings: " +
+                                    "\n Request time 01:00:00 - 01:05:00 " +
+                                    "\n Timeout - 60000 " +
+                                    "\n Object for request АТ1, АТ2, АТ3, АТ4, АТ5" +
+                                    "\n Serial ports: COM10, COM11, COM12, COM13, COM14" +
+                                    "\n ID ModusSlave (on UVP): 1, 1, 2, 1, 1");
 
                     try
                     {
@@ -157,7 +157,7 @@ namespace OPC_Client
 
                         file.Close();
 
-                        Console.WriteLine("Создан новый файл settings.txt \n");
+                        Console.WriteLine("New settings.txt is created \n");
                     }
                     catch (Exception ex)
                     {
@@ -165,13 +165,13 @@ namespace OPC_Client
                     }
                     break;
                 case 1:
-                    Console.WriteLine("Файл с журналом событий log.txt отсуствует. Будет создан новый файл.");
+                    Console.WriteLine("TXT-File log.txt not found. New file will be created");
                     try
                     {
                         StreamWriter file = new StreamWriter("log.txt"); 
                         file.Close();
 
-                        Console.WriteLine("Создан новый файл log.txt \n");
+                        Console.WriteLine("New log.txt is created\n");
                     }
                     catch (Exception ex)
                     {
@@ -208,7 +208,7 @@ namespace OPC_Client
                 RequestID = rnd.Next(100, 999);                
                 SendRequest_Mod(Day, Month, Year, RequestID, serialPortNumber, slaveID);
 
-                Messaging($"Информация по { numberAT } запрошена { DateTime.Now.ToString() }. ID запроса { RequestID.ToString() }\n");
+                Messaging($"Infromation on { numberAT } is requested { DateTime.Now.ToString() }. Request ID { RequestID.ToString() }\n");
                 Thread.Sleep(Convert.ToInt32(sleepTime));
                 
                 var result = GetResponse_Mod(RequestID, serialPortNumber, slaveID);
@@ -252,7 +252,7 @@ namespace OPC_Client
             periodFrom = periodFrom.AddDays(incr);
             periodTo = periodTo.AddDays(incr);
 
-            Messaging($"Данные будут запрошены в промежуток времени { periodFrom.ToString() } - { periodTo.ToString() }\n");
+            Messaging($"Data would be requested in time period { periodFrom.ToString() } - { periodTo.ToString() }\n");
 
             yesterdayDate = periodFrom.AddDays(-1);
 
@@ -267,7 +267,7 @@ namespace OPC_Client
             var requestPeriodFrom = new DateTime(Convert.ToInt32(yesterdayDate.ToString("yyyy")), Convert.ToInt32(yesterdayDate.ToString("MM")), Convert.ToInt32(yesterdayDate.ToString("dd")), 00, 00, 0);
             var requestPeriodTo = new DateTime(Convert.ToInt32(yesterdayDate.ToString("yyyy")), Convert.ToInt32(yesterdayDate.ToString("MM")), Convert.ToInt32(yesterdayDate.ToString("dd")), 23, 59, 59);
 
-            Messaging($"Данные будут запрошены за период { requestPeriodFrom.ToString() } - { requestPeriodTo.ToString() }\n");
+            Messaging($"Data would be requested for time period { requestPeriodFrom.ToString() } - { requestPeriodTo.ToString() }\n");
             
             return Tuple.Create(intArray, periodFrom, periodTo, requestPeriodFrom, requestPeriodTo);
         }
@@ -285,22 +285,22 @@ namespace OPC_Client
                         switch (param)
                         {
                             case 0:
-                                Messaging("Начало работы \n");
+                                Messaging("Work start \n");
                                 break;
                             case 1:
-                                Messaging("Запись АТ-1 успешно добавлена в базу данных \n");
+                                Messaging("Record for AT-1 is succeccfully added to DB \n");
                                 break;
                             case 2:
-                                Messaging("Запись АТ-2 успешно добавлена в базу данных \n");
+                                Messaging("Record for AT-2 is succeccfully added to DB \n");
                                 break;
                             case 3:
-                                Messaging("Запись АТ-3 успешно добавлена в базу данных \n");
+                                Messaging("Record for AT-3 is succeccfully added to DB \n");
                                 break;
                             case 4:
-                                Messaging("Запись АТ-4 успешно добавлена в базу данных \n");
+                                Messaging("Record for AT-4 is succeccfully added to DB \n");
                                 break;
                             case 5:
-                                Messaging("Запись АТ-5 успешно добавлена в базу данных \n");
+                                Messaging("Record for AT-5 is succeccfully added to DB \n");
                                 break;
                         }
                     }
@@ -374,15 +374,15 @@ namespace OPC_Client
                 {
                     case 0:
                         status = 0;
-                        Messaging("Результат запроса уничтожен по таймауту или запрос не был воспринят вычислителем \n");
+                        Messaging("Request result is destroyed due to time out, or because request wasn't perceive by device \n");
                         break;
                     case 1:
                         status = 1;
-                        Messaging("Идет сбор данных \n");
+                        Messaging("Data collecting in progress \n");
                         break;
                     case 2:
                         status = 2;
-                        Messaging("Данные готовы \n");
+                        Messaging("Data is ready \n");
 
                         if (RequestID == Convert.ToInt32(requestID))
                         {
@@ -391,28 +391,28 @@ namespace OPC_Client
                         else
                         {
                             status = 8;
-                            Messaging($"ID запроса не равен ID ответа { RequestID.ToString() } <> { requestID.ToString() } \n");
+                            Messaging($"Request ID not equal to answer ID { RequestID.ToString() } <> { requestID.ToString() } \n");
                         }
                         break;
                     case 3:
                         status = 3;
-                        Messaging("За выбранный промежуток времени в архиве нет ни одной записи \n");
+                        Messaging("There are no data for specified time period \n");
                         break;
                     case 4:
                         status = 4;
-                        Messaging("Ошибка в начальном времени, дата или время некорректны \n");
+                        Messaging("Error in Begin Date, date or time is incorrect \n");
                         break;
                     case 5:
                         status = 5;
-                        Messaging("Ошибка в конечном времени, дата или время некорректны \n");
+                        Messaging("Error in End Date, date or time is incorrect \n");
                         break;
                     case 6:
                         status = 6;
-                        Messaging("Ошибка в задании номера трубопровода \n");
+                        Messaging("Error in pipeline number \n");
                         break;
                     case 7:
                         status = 7;
-                        Messaging("Выбран слишком большой период для сбора данных, сбор данных продолжался больше 15 секунд \n");
+                        Messaging("Choosed period is too big, data collecting took more than 15 seconds \n");
                         break;
                 }
 
