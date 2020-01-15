@@ -208,7 +208,6 @@ namespace OPC_Client
                 RequestID = rnd.Next(100, 999);                
                 SendRequest_Mod(Day, Month, Year, RequestID, serialPortNumber, slaveID);
 
-                //Messaging("Информация по " + numberAT + " запрошена " + DateTime.Now.ToString() + ". ID запроса " + RequestID.ToString() + "\n");
                 Messaging($"Информация по { numberAT } запрошена { DateTime.Now.ToString() }. ID запроса { RequestID.ToString() }\n");
                 Thread.Sleep(Convert.ToInt32(sleepTime));
                 
