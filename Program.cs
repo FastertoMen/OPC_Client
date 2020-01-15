@@ -60,9 +60,7 @@ namespace OPC_Client
                     processGo = false;
                 }
 
-                if ((DateTime.Now >= dateArray.Item2 && DateTime.Now <= dateArray.Item3) && (processGo == false))
-                //if (DateTime.Now >= dateArray.Item2 && DateTime.Now <= dateArray.Item3)
-                //if ((1 == 1) && (processGo == false))
+                if ((DateTime.Now >= dateArray.Item2 && DateTime.Now <= dateArray.Item3) && (processGo == false))                
                 {                    
                     doneAT1 = false;
                     doneAT2 = false;
@@ -216,8 +214,7 @@ namespace OPC_Client
                 
                 var result = GetResponse_Mod(RequestID, serialPortNumber, slaveID);
                 
-                if (result.Item1 == 2)
-                //if (2 == 2)
+                if (result.Item1 == 2)                
                 {
                     try
                     {
