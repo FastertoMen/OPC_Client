@@ -142,9 +142,9 @@ namespace OPC_Client
                     Console.WriteLine("TXT-File settings.txt not found. New file will be created with default settings: " +
                                     "\n Request time 01:00:00 - 01:05:00 " +
                                     "\n Timeout - 60000 " +
-                                    "\n Object for request АТ1, АТ2, АТ3, АТ4, АТ5" +
+                                    "\n Objects for request АТ1, АТ2, АТ3, АТ4, АТ5" +
                                     "\n Serial ports: COM10, COM11, COM12, COM13, COM14" +
-                                    "\n ID ModusSlave (on UVP): 1, 1, 2, 1, 1");
+                                    "\n ID ModbusSlave (on UVP280): 1, 1, 2, 1, 1");
 
                     try
                     {
@@ -208,7 +208,7 @@ namespace OPC_Client
                 RequestID = rnd.Next(100, 999);                
                 SendRequest_Mod(Day, Month, Year, RequestID, serialPortNumber, slaveID);
 
-                Messaging($"Infromation on { numberAT } is requested { DateTime.Now.ToString() }. Request ID { RequestID.ToString() }\n");
+                Messaging($"Infromation for { numberAT } is requested { DateTime.Now.ToString() }. Request ID { RequestID.ToString() }\n");
                 Thread.Sleep(Convert.ToInt32(sleepTime));
                 
                 var result = GetResponse_Mod(RequestID, serialPortNumber, slaveID);
