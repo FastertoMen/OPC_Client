@@ -15,6 +15,19 @@ namespace OPC_Client
             public static string settingsFilePath = @"settings.txt";
             public static string logFilePath = @"log.txt";
         }
+        public static string Reverse(string s)
+        {
+            char[] charArray = s.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
+        public static string TrimResult(string s)
+        {
+            s = s.Substring(s.IndexOf(';') + 1, s.Length - s.IndexOf(';') - 1);
+            s = s.Substring(0, s.IndexOf(';') - 2);
+           
+            return s;
+        }
         static void Main(string[] args)
         {
             TitaniumAS.Opc.Client.Bootstrap.Initialize();            
@@ -368,7 +381,25 @@ namespace OPC_Client
                 requestStatus = master.ReadHoldingRegisters(slaveID, 8000, 1)[0];
                 requestID = master.ReadHoldingRegisters(slaveID, 8001, 1)[0];
                 resultLength = master.ReadHoldingRegisters(slaveID, 8002, 1)[0];
-                resultData = master.ReadHoldingRegisters(slaveID, 8040, 1)[0];
+                
+                string resstr = "";
+
+                for (int i = 0; i < master.ReadHoldingRegisters(slaveID, 8046, 10).Length; i++)
+                {
+                    byte[] asciiValue = BitConverter.GetBytes(master.ReadHoldingRegisters(slaveID, 8046, 10)[i]);
+                    resstr += Reverse(Encoding.UTF8.GetString(asciiValue));
+                }
+
+                for (int i = 0; i < master.ReadHoldingRegisters(slaveID, 8057, 10).Length; i++)
+                {
+                    byte[] asciiValue = BitConverter.GetBytes(master.ReadHoldingRegisters(slaveID, 8057, 10)[i]);
+                    resstr += Reverse(Encoding.UTF8.GetString(asciiValue));
+                }
+
+                if (resstr.Length > 0)
+                {
+                    resstr = TrimResult(resstr);
+                }
 
                 switch (Convert.ToInt32(requestStatus))
                 {
@@ -386,7 +417,7 @@ namespace OPC_Client
 
                         if (RequestID == Convert.ToInt32(requestID))
                         {
-                            response = resultData.ToString();
+                            response = resstr;
                         }
                         else
                         {
