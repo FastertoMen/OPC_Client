@@ -351,7 +351,7 @@ namespace OPC_Client
                 master.WriteSingleRegister(slaveID, 7913, 59);
                 master.WriteSingleRegister(slaveID, 7914, 0);
 
-                Messaging("Запрос был отправлен");
+                Messaging("Request was sent");
                 
                 serialPort.Close();
             }
